@@ -1,0 +1,6 @@
+@Siemens_HostAddress = http://localhost:5130
+
+GET {{Siemens_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
