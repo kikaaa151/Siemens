@@ -7,13 +7,10 @@ using Siemens.Models;
 
 namespace Siemens.Services
 {
-    /// Service implementation for managing products using a JSON file as storage.
     public class ProductService : IProductService
     {
-        // File path used to persist product data.
         private readonly string _filePath = "inventory.json";
 
-        /// Ensures the backing JSON file exists when the service is created.
         public ProductService()
         {
             if (!File.Exists(_filePath))
@@ -22,30 +19,25 @@ namespace Siemens.Services
             }
         }
 
-        /// Reads product list from the JSON file.
         private List<Product> ReadData()
         {
             var json = File.ReadAllText(_filePath);
             return JsonSerializer.Deserialize<List<Product>>(json) ?? new List<Product>();
         }
 
-        /// Serializes and writes product list to the JSON file.
         private void SaveData(List<Product> products)
         {
             var json = JsonSerializer.Serialize(products, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(_filePath, json);
         }
 
-        /// Returns all products from storage.
         public IEnumerable<Product> GetAll() => ReadData();
 
-        /// Finds a product by id or returns null when not found.
         public Product? GetById(int id)
         {
             return ReadData().FirstOrDefault(p => p.Id == id);
         }
 
-        /// Adds a product, assigns an auto-incremented id, persists and returns it.
         public Product Add(Product product)
         {
             var products = ReadData();
@@ -55,7 +47,6 @@ namespace Siemens.Services
             return product;
         }
 
-        /// Updates an existing product; returns false when not found.
         public bool Update(int id, Product updatedProduct)
         {
             var products = ReadData();
